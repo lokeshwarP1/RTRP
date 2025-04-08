@@ -26,8 +26,9 @@ export const ChatProvider = ({ children }) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/api/history');
-      setMessages(response.data);
+      // Fetch chat history from the backend
+      const response = await axios.get('http://127.0.0.1:5000/api/history');
+      setMessages(response.data.messages || []); // Ensure messages are an array
     } catch (err) {
       console.error('Failed to fetch chat history:', err);
       setError('Failed to load chat history. Please try again.');
@@ -47,61 +48,65 @@ export const ChatProvider = ({ children }) => {
       timestamp: new Date().toISOString(),
     };
 
-    setMessages(prevMessages => [...prevMessages, userMessage]);
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
     setIsLoading(true);
     setError(null);
 
     try {
-      // Connect to the KMIT chatbot backend
+      // Send the query to the Flask backend
       const response = await axios.post('http://127.0.0.1:5000/chat', { query: text });
-      
+
       // Add bot response to the chat
       const botMessage = {
-        id: (Date.now() + 1).toString(),
-        text: response.data.response, // KMIT chatbot returns response in 'response' field
+        id: `${Date.now() + 1}`,
+        text: Array.isArray(response.data.response)
+          ? response.data.response.join('\n') // Join bullet points into a single string
+          : response.data.response || 'No response available.',
         sender: 'bot',
         timestamp: new Date().toISOString(),
       };
 
-      setMessages(prevMessages => [...prevMessages, botMessage]);
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (err) {
       console.error('Failed to send message:', err);
       setError('Failed to send message. Please try again.');
-      
+
       // Add error message to chat
       const errorMessage = {
-        id: (Date.now() + 1).toString(),
+        id: `${Date.now() + 1}`,
         text: 'Sorry, I encountered an error while processing your request. Please try again.',
         sender: 'bot',
         timestamp: new Date().toISOString(),
-        isError: true
+        isError: true,
       };
-      
-      setMessages(prevMessages => [...prevMessages, errorMessage]);
+
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([]); // Clear local messages
+
     // If user is logged in, also clear chat history on the server
     if (user) {
-      axios.delete('/api/history').catch(err => {
-        console.error('Failed to clear chat history:', err);
-      });
+      axios
+        .delete('http://127.0.0.1:5000/api/history')
+        .catch((err) => {
+          console.error('Failed to clear chat history:', err);
+        });
     }
   };
 
   const rateMessage = async (messageId, rating) => {
     try {
-      await axios.post('/api/rate', { messageId, rating });
-      
+      // Send the rating to the backend
+      await axios.post('http://127.0.0.1:5000/api/rate', { messageId, rating });
+
       // Update the message in the local state
-      setMessages(prevMessages =>
-        prevMessages.map(msg =>
-          msg.id === messageId ? { ...msg, rating } : msg
-        )
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) => (msg.id === messageId ? { ...msg, rating } : msg))
       );
     } catch (err) {
       console.error('Failed to rate message:', err);
