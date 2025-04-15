@@ -20,6 +20,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Add cache control headers
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Expires', '-1');
+  res.set('Pragma', 'no-cache');
+  next();
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/campus-genie', {
   useNewUrlParser: true,
@@ -28,19 +36,19 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/campus-ge
 .then(() => console.log('MongoDB connected successfully'))
 .catch(err => console.error('MongoDB connection error:', err));
 
+// Serve static assets
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
+
 // API Routes
 app.use('/api/auth', authRoutes);
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('dist'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-  });
-}
+// Serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

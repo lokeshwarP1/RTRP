@@ -26,8 +26,8 @@ export const ChatProvider = ({ children }) => {
     setIsLoading(true);
     setError(null);
     try {
-      // Fetch chat history from the backend
-      const response = await axios.get('http://127.0.0.1:5000/api/history');
+      // Fetch chat history from the backend with user ID
+      const response = await axios.get(`http://127.0.0.1:4000/api/chat/history/${user?._id}`);
       setMessages(response.data.messages || []); // Ensure messages are an array
     } catch (err) {
       console.error('Failed to fetch chat history:', err);
@@ -53,8 +53,11 @@ export const ChatProvider = ({ children }) => {
     setError(null);
 
     try {
-      // Send the query to the Flask backend
-      const response = await axios.post('http://127.0.0.1:5000/chat', { query: text });
+      // Send the query to the Flask backend with user ID
+      const response = await axios.post('http://127.0.0.1:4000/api/chat', { 
+        query: text,
+        userId: user?._id 
+      });
 
       // Add bot response to the chat
       const botMessage = {
@@ -91,18 +94,31 @@ export const ChatProvider = ({ children }) => {
 
     // If user is logged in, also clear chat history on the server
     if (user) {
-      axios
-        .delete('http://127.0.0.1:5000/api/history')
-        .catch((err) => {
-          console.error('Failed to clear chat history:', err);
-        });
+      clearChatHistory();
+    }
+  };
+
+  const clearChatHistory = async () => {
+    try {
+      setIsLoading(true);
+      await axios.delete(`http://127.0.0.1:4000/api/chat/history/${user?._id}`);
+      setMessages([]);
+    } catch (error) {
+      console.error('Error clearing chat history:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const rateMessage = async (messageId, rating) => {
     try {
-      // Send the rating to the backend
-      await axios.post('http://127.0.0.1:5000/api/rate', { messageId, rating });
+      // Send the rating to the backend with user ID
+      await axios.post('http://127.0.0.1:4000/api/rate', { 
+        messageId, 
+        rating,
+        userId: user?._id 
+      });
 
       // Update the message in the local state
       setMessages((prevMessages) =>

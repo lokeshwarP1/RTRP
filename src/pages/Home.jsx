@@ -58,7 +58,7 @@ const Home = () => {
     
     try {
       // Connect to the real KMIT chatbot backend
-      const response = await axios.post('http://127.0.0.1:5000/chat', { query: demoInput });
+      const response = await axios.post('http://127.0.0.1:4000/api/chat', { query: demoInput });
       
       // Replace loading message with actual response
       setDemoMessages(prev => {
@@ -396,8 +396,6 @@ const Home = () => {
             </div>
           </motion.div>
         </div>
-
-
 
         {/* Features */}
         <motion.div 

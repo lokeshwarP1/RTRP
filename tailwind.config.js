@@ -24,12 +24,12 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(198 100% 28%)", // KMIT Blue
+          foreground: "hsl(0 0% 100%)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(28 100% 50%)", // KMIT Orange
+          foreground: "hsl(0 0% 100%)",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -40,8 +40,8 @@ module.exports = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(198 100% 28%)",
+          foreground: "hsl(0 0% 100%)",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

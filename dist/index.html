@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Campus Genie - AI-Powered College Chatbot</title>
+    <meta name="description" content="Get answers to all your campus-related questions with our AI-powered chatbot" />
+    <script type="text/javascript">
+      // Force cache refresh
+      (function() {
+        // Add timestamp to all script and css files
+        const timestamp = new Date().getTime();
+        document.querySelectorAll('script[src], link[rel="stylesheet"]').forEach(element => {
+          const currentSrc = element.getAttribute('src') || element.getAttribute('href');
+          if (currentSrc) {
+            const separator = currentSrc.includes('?') ? '&' : '?';
+            element.setAttribute(
+              element.tagName === 'SCRIPT' ? 'src' : 'href',
+              `${currentSrc}${separator}v=${timestamp}`
+            );
+          }
+        });
+
+        // Clear browser cache on load
+        window.onload = function() {
+          if (typeof window.history.pushState === 'function') {
+            window.history.pushState({}, '', window.location.href);
+          }
+          if ('caches' in window) {
+            caches.keys().then(names => {
+              names.forEach(name => {
+                caches.delete(name);
+              });
+            });
+          }
+        };
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BdOy7EO1.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D1HxleeH.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

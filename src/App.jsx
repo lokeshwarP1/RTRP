@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Chat from './pages/Chat';
+import ChatHistory from './pages/ChatHistory';
+import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
 // Components
@@ -46,6 +48,16 @@ function App() {
             <Route path="/chat" element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat-history" element={
+              <ProtectedRoute>
+                <ChatHistory />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

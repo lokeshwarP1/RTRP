@@ -5,64 +5,64 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 200 70% 10%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 200 70% 10%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --popover-foreground: 200 70% 10%;
+    
+    --primary: 198 100% 28%;  /* KMIT Blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 28 100% 50%;  /* KMIT Orange */
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 200 20% 96%;
+    --muted-foreground: 200 20% 40%;
+    
+    --accent: 198 100% 28%;
+    --accent-foreground: 0 0% 100%;
+    
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 200 20% 88%;
+    --input: 200 20% 88%;
+    --ring: 198 100% 28%;
+    
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --background: 200 50% 10%;
+    --foreground: 0 0% 98%;
+    
+    --card: 200 50% 10%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 200 50% 10%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 198 100% 28%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 28 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 200 50% 15%;
+    --muted-foreground: 200 20% 65%;
+    
+    --accent: 198 100% 28%;
+    --accent-foreground: 0 0% 100%;
+    
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 200 50% 15%;
+    --input: 200 50% 15%;
+    --ring: 198 100% 28%;
   }
 }
 
@@ -76,49 +76,95 @@
   }
 }
 
-/* Glassmorphism */
+/* Institutional Card Style */
+.card {
+  @apply rounded-md border bg-card text-card-foreground shadow-sm transition-all duration-300;
+  box-shadow: 0 2px 4px rgba(0, 108, 142, 0.1);
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 108, 142, 0.2);
+}
+
+/* Professional Button Styles */
+.btn {
+  @apply rounded-md px-4 py-2 font-medium transition-all duration-300;
+}
+
+.btn-primary {
+  @apply bg-primary text-primary-foreground hover:brightness-110;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-secondary-foreground hover:brightness-110;
+}
+
+/* Academic Input Style */
+.input {
+  @apply rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-colors;
+  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary;
+}
+
+/* Institutional Header */
+.institutional-header {
+  @apply bg-primary text-primary-foreground py-2 px-4 text-sm font-medium text-center;
+}
+
+/* Navigation Link */
+.nav-link {
+  @apply text-foreground/80 hover:text-primary transition-colors duration-200 relative;
+  @apply after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary;
+  @apply hover:after:w-full after:transition-all after:duration-300;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/20 rounded-full hover:bg-primary/30;
+}
+
+/* Institutional Banner */
+.banner {
+  @apply relative overflow-hidden bg-primary text-primary-foreground;
+  background-image: linear-gradient(135deg, rgba(0, 108, 142, 0.95), rgba(0, 108, 142, 0.8));
+}
+
+/* Academic Section */
+.academic-section {
+  @apply p-6 rounded-lg border border-border bg-card;
+  box-shadow: 0 2px 4px rgba(0, 108, 142, 0.05);
+}
+
+/* Institutional Footer */
+.institutional-footer {
+  @apply bg-primary text-primary-foreground;
+  background-image: linear-gradient(135deg, rgba(0, 108, 142, 1), rgba(0, 108, 142, 0.9));
+}
+
+/* Modern Glass Effect */
 .glass {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .dark .glass {
-  background: rgba(17, 25, 40, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.125);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Neumorphism */
-.neumorph {
-  border-radius: 50px;
-  background: #e0e0e0;
-  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-}
-
-.dark .neumorph {
-  background: #1a1a1a;
-  box-shadow: 20px 20px 60px #0d0d0d, -20px -20px 60px #272727;
-}
-
-/* Animations */
-.typing-animation {
-  display: inline-block;
-  overflow: hidden;
-  border-right: 0.15em solid;
-  white-space: nowrap;
-  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: currentColor; }
+/* Smooth Transitions */
+.smooth-transition {
+  @apply transition-all duration-300 ease-in-out;
 }
 
 /* Floating elements */
@@ -142,32 +188,4 @@
 
 .dark .glow:hover {
   box-shadow: 0 0 15px rgba(99, 179, 237, 0.6);
-}
-
-/* Chat bubbles */
-.chat-bubble-user {
-  @apply bg-primary text-primary-foreground rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-sm p-4 max-w-[80%] ml-auto animate-slide-in-left;
-}
-
-.chat-bubble-bot {
-  @apply bg-secondary text-secondary-foreground rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-sm p-4 max-w-[80%] mr-auto animate-slide-in-right;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(155, 155, 155, 0.5);
-  border-radius: 20px;
-  border: transparent;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(155, 155, 155, 0.8);
 }
