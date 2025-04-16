@@ -11,6 +11,7 @@ import Signup from './pages/Signup';
 import Chat from './pages/Chat';
 import ChatHistory from './pages/ChatHistory';
 import Dashboard from './pages/Dashboard';
+import Timetable from './pages/Timetable'; // Import the Timetable component
 import NotFound from './pages/NotFound';
 
 // Components
@@ -42,24 +43,46 @@ function App() {
       <main className="container mx-auto px-4 py-8">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/chat" element={
-              <ProtectedRoute>
-                <Chat />
-              </ProtectedRoute>
-            } />
-            <Route path="/chat-history" element={
-              <ProtectedRoute>
-                <ChatHistory />
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
+
+            {/* Protected Routes */}
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat-history"
+              element={
+                <ProtectedRoute>
+                  <ChatHistory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/timetable"
+              element={
+                <ProtectedRoute>
+                  <Timetable />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Fallback Route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>

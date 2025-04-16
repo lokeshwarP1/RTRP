@@ -78,7 +78,7 @@ def retrieve_answers(query, faiss_index, model, k=3):
     return retrieved_answers
 
 # OpenAI client
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "" #api key
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=OPENROUTER_API_KEY,

@@ -1,0 +1,330 @@
+{
+    "attendance": [
+        [
+            "Subject",
+            "Theory(%)",
+            "Practical"
+        ],
+        [
+            "ACD",
+            "",
+            ""
+        ],
+        [
+            "DS",
+            "",
+            ""
+        ],
+        [
+            "COMP",
+            "",
+            ""
+        ],
+        [
+            "ML",
+            "",
+            ""
+        ],
+        [
+            "OS",
+            "",
+            ""
+        ],
+        [
+            "ML_LAB/DS_LAB",
+            "",
+            ""
+        ],
+        [
+            "ML_LAB/OS_LAB",
+            "",
+            ""
+        ],
+        [
+            "DS_LAB/OS_LAB",
+            "",
+            ""
+        ]
+    ],
+    "sessions": [
+        "Absent",
+        "Present",
+        "Absent",
+        "Absent",
+        "Absent",
+        "Absent",
+        "Absent"
+    ],
+    "timetable": [
+        {
+            "header": "Monday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "DS"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "OS"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "DS_LAB/OS_LAB"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "DS_LAB/OS_LAB"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "COMP"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        },
+        {
+            "header": "Tuesday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "ACD"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "DS"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "ACD"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "COMP"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "ML"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        },
+        {
+            "header": "Wednesday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "ACD"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "OS"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "ML_LAB/DS_LAB"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "ML_LAB/DS_LAB"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "COMP"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        },
+        {
+            "header": "Thursday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "ML"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "ML"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "COMP"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "OS"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "DS"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        },
+        {
+            "header": "Friday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "ML_LAB/OS_LAB"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "ML_LAB/OS_LAB"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "DS"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "OS"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "ACD"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        },
+        {
+            "header": "Saturday",
+            "rows": [
+                [
+                    "PERIOD",
+                    "SUBJECT"
+                ],
+                [
+                    "10.00 AM - 10.50 AM",
+                    "DS"
+                ],
+                [
+                    "10.50 AM - 11.40 AM",
+                    "OS"
+                ],
+                [
+                    "11.40 AM - 11.50 AM",
+                    "Short Break"
+                ],
+                [
+                    "11.50 AM - 12.40 PM",
+                    "COMP"
+                ],
+                [
+                    "12.40 PM - 01.30 PM",
+                    "ML"
+                ],
+                [
+                    "Lunch: 01.30 PM - 02.15 PM",
+                    ""
+                ],
+                [
+                    "02.15 PM - 03.00 PM",
+                    "ACD"
+                ],
+                [
+                    "03.00 PM - 03.45 PM",
+                    "RTRP"
+                ],
+                [
+                    "03.45 PM - 04.30 PM",
+                    "RTRP"
+                ]
+            ]
+        }
+    ]
+}

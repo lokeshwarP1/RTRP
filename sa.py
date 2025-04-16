@@ -1,123 +1,117 @@
+from flask import Flask, request, jsonify
 import asyncio
-from pyppeteer import launch
+from playwright.async_api import async_playwright
+import json
+from flask_cors import CORS  # Import CORS
 
-async def login_to_kmit_netra(mobile_number):
-    # Launch the browser in headless mode
-    browser = await launch(headless=True)
-    page = await browser.newPage()
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
+@app.route('/api/update-dashboard', methods=['POST'])
+def update_dashboard():
     try:
-        # 1. Go to login page
-        print("🌐 Opening KMIT Netra login page...")
-        await page.goto("http://kmit-netra.teleuniv.in/", waitUntil="load")
+        # Get the mobile number from the request body
+        data = request.get_json()
+        mobile_number = data.get('mobile_number')
+        if not mobile_number:
+            return jsonify({"error": "Mobile number is required"}), 400
 
-        # 2. Wait for mobile number input
-        print("📱 Entering credentials...")
-        await page.waitForSelector('#login_mobilenumber', timeout=10000)
-        await page.type('#login_mobilenumber', mobile_number)
-        await page.type('#login_password', 'Kmit123$')  # Replace with secure password handling
+        # Fetch data from the KMIT Netra Portal
+        scraped_data = asyncio.run(login_to_kmit_netra(mobile_number))
 
-        # 3. Click login
-        await page.click('button[type="submit"]')
-        await page.waitForNavigation({'waitUntil': 'networkidle2'})
-        print("✅ Logged in successfully!")
+        # Save the retrieved data to a JSON file
+        if scraped_data:
+            with open('kmit_data.json', 'w') as json_file:
+                json.dump(scraped_data, json_file, indent=4)
 
-        # 4. Navigate to dashboard
-        print("\n📖 Navigating to dashboard...")
-        await page.goto("http://kmit-netra.teleuniv.in/student", waitUntil="networkidle2")
-        await page.waitForSelector('.ant-page-header-heading-title', timeout=10000)  # Wait for dashboard title
-
-        # 5. Extract attendance details
-        await extract_attendance(page)
-
-        # 6. Navigate to timetable page
-        print("\n📅 Extracting timetable details...")
-        await page.goto("http://kmit-netra.teleuniv.in/student/time-table", waitUntil="networkidle2", timeout=60000)
-        await page.waitForSelector('.ant-page-header-heading-title', timeout=10000)  # Wait for timetable page title
-
-        # 7. Extract timetable details
-        await extract_timetable(page)
+        # Return the scraped data as a JSON response
+        return jsonify(scraped_data), 200
 
     except Exception as e:
-        print(f"❌ An error occurred: {e}")
+        return jsonify({"error": str(e)}), 500
 
-    finally:
-        # Close the browser
-        await browser.close()
+
+async def login_to_kmit_netra(mobile_number):
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        data = {"attendance": [], "sessions": [], "timetable": []}
+
+        try:
+            # Navigate to the login page and log in
+            await page.goto("http://kmit-netra.teleuniv.in/", wait_until="load")
+            await page.wait_for_selector('#login_mobilenumber', timeout=10000)
+            await page.fill('#login_mobilenumber', mobile_number)
+            await page.fill('#login_password', 'Kmit123$')  # Replace securely in real use
+            await page.click('button[type="submit"]')
+            await page.wait_for_load_state('networkidle')
+
+            # Fetch attendance data
+            await page.goto("http://kmit-netra.teleuniv.in/student/attendance", wait_until="networkidle")
+            await page.wait_for_selector('.ant-page-header-heading-title', timeout=10000)
+            data['attendance'], data['sessions'] = await extract_attendance(page)
+
+            # Fetch timetable data
+            await page.goto("http://kmit-netra.teleuniv.in/student/time-table", wait_until="networkidle")
+            await page.wait_for_selector('.ant-page-header-heading-title', timeout=10000)
+            data['timetable'] = await extract_timetable(page)
+
+        except Exception as e:
+            print("❌ Error:", e)
+
+        finally:
+            await browser.close()
+            return data
 
 
 async def extract_attendance(page):
-    print("\n📅 Extracting attendance details...")
-
     try:
-        # Extract attendance statuses for each session
-        attendance_statuses = await page.evaluate('''() => {
-            const sessions = Array.from(document.querySelectorAll('div.ant-card-body span'));
-            return sessions.map(session => {
-                const svg = session.querySelector('svg');
-                if (!svg) return 'Not Marked';
-                const fill = svg.getAttribute('fill');
-                if (fill === 'green') return 'Present';
-                if (fill === 'red') return 'Absent';
-                return 'Not Marked'; // Default for unknown cases
-            });
-        }''')
+        overall_xpath = '//div[contains(@class, "ant-collapse-header") and .//h4[text()="Overall"]]'
+        await page.wait_for_selector(overall_xpath, timeout=10000)
+        await page.click(overall_xpath)
+        await page.wait_for_timeout(3000)
+    except:
+        pass
 
-        # Extract timestamp
-        timestamp = await page.evaluate('''() => {
-            const timestampElement = document.querySelector('div.ant-card-body p');
-            return timestampElement ? timestampElement.innerText.trim() : "Timestamp not found";
-        }''')
+    attendance = await page.evaluate('''() => {
+        const rows = Array.from(document.querySelectorAll('div.ant-collapse-content-active table tr'));
+        return rows.map(row => {
+            const cols = row.querySelectorAll('td, th');
+            return Array.from(cols).map(col => col.innerText.trim());
+        });
+    }''')
 
-        print(f"📅 Attendance Timestamp: {timestamp}")
-        print("\n📅 Attendance Status for Each Period:")
-        for idx, status in enumerate(attendance_statuses, start=1):
-            print(f"Session {idx}: {status}")
+    session_data = await page.evaluate('''() => {
+        const sessions = Array.from(document.querySelectorAll('div.ant-collapse-content-active span > svg'));
+        return sessions.map(svg => svg.getAttribute('fill') === 'green' ? 'Present' : 'Absent');
+    }''')
 
-    except Exception as e:
-        print(f"⚠️ Could not extract attendance details: {e}")
+    return attendance, session_data
 
 
 async def extract_timetable(page):
-    print("\n📅 Extracting timetable details...")
-
     try:
-        # Expand all collapsible sections (days of the week)
-        print("🔄 Expanding all collapsible sections...")
-        collapsible_headers_xpath = '//div[contains(@class, "ant-collapse-header")]'
-        collapsible_headers = await page.xpath(collapsible_headers_xpath)
+        collapsible_headers = await page.query_selector_all('//div[contains(@class, "ant-collapse-header")]')
         for header in collapsible_headers:
             await header.click()
-            await page.waitForSelector('div.ant-collapse-content-active')  # Wait for content to load
-            await asyncio.sleep(2)  # Additional wait for dynamic content to load
+            await page.wait_for_timeout(1000)
+    except:
+        pass
 
-        # Debugging: Take a screenshot to verify the DOM structure
-        await page.screenshot({'path': 'timetable_expanded.png'})
-
-        # Extract timetable data
-        timetable_data = await page.evaluate('''() => {
-            const days = Array.from(document.querySelectorAll('div.ant-collapse-item'));
-            return days.map(day => {
-                const header = day.querySelector('.ant-collapse-header').innerText.trim();
-                const rows = Array.from(day.querySelectorAll('div.ant-collapse-content-box table tr')).map(row => {
-                    const cols = row.querySelectorAll('td, th');
-                    return Array.from(cols).map(col => col.innerText.trim());
-                });
-                return { header, rows };
+    timetable_data = await page.evaluate('''() => {
+        const days = Array.from(document.querySelectorAll('div.ant-collapse-item'));
+        return days.map(day => {
+            const header = day.querySelector('.ant-collapse-header').innerText.trim();
+            const rows = Array.from(day.querySelectorAll('div.ant-collapse-content-box table tr')).map(row => {
+                const cols = row.querySelectorAll('td, th');
+                return Array.from(cols).map(col => col.innerText.trim());
             });
-        }''')
+            return { header, rows };
+        });
+    }''')
 
-        # Print extracted timetable data
-        print("\n📅 Timetable:")
-        for day in timetable_data:
-            print(f"\nDay: {day['header']}")
-            for row in day['rows']:
-                print(" | ".join(row))
-
-    except Exception as e:
-        print(f"⚠️ Could not extract timetable details: {e}")
+    return timetable_data
 
 
-if __name__ == "__main__":
-    mobile_number = input("📱 Enter your mobile number: ")
-    asyncio.get_event_loop().run_until_complete(login_to_kmit_netra(mobile_number))
+if __name__ == '__main__':
+    app.run(debug=True, port=3000)

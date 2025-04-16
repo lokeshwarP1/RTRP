@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Sun, Moon, Menu, X, LogOut, User, MessageSquare, LayoutDashboard, ChevronDown, History } from 'lucide-react';
+import { Sun, Moon, Menu, X, LogOut, User, MessageSquare, LayoutDashboard, ChevronDown, History, Calendar } from 'lucide-react';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -37,6 +37,7 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', path: '/' },
     ...(user ? [{ name: 'Chat', path: '/chat' }] : []),
+    ...(user ? [{ name: 'Timetable', path: '/timetable' }] : []), // Add Timetable link
     ...(user ? [] : [
       { name: 'Login', path: '/login' },
       { name: 'Register', path: '/signup' }
@@ -77,7 +78,14 @@ const Navbar = () => {
                 to={item.path}
                 className="nav-link text-sm font-medium hover:text-primary transition-colors duration-200"
               >
-                {item.name}
+                {item.name === 'Timetable' ? (
+                  <span className="flex items-center">
+                    <Calendar size={16} className="mr-2" /> {/* Icon for Timetable */}
+                    {item.name}
+                  </span>
+                ) : (
+                  item.name
+                )}
               </Link>
             ))}
             
@@ -179,9 +187,16 @@ const Navbar = () => {
                     key={item.name}
                     to={item.path}
                     onClick={() => setIsMenuOpen(false)}
-                    className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors duration-200"
+                    className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-md transition-colors duration-200 flex items-center"
                   >
-                    {item.name}
+                    {item.name === 'Timetable' ? (
+                      <>
+                        <Calendar size={16} className="mr-2" /> {/* Icon for Timetable */}
+                        {item.name}
+                      </>
+                    ) : (
+                      item.name
+                    )}
                   </Link>
                 ))}
                 {user && (
