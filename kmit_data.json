@@ -1,60 +1,15 @@
 {
-    "attendance": [
-        [
-            "Subject",
-            "Theory(%)",
-            "Practical"
-        ],
-        [
-            "ACD",
-            "",
-            ""
-        ],
-        [
-            "DS",
-            "",
-            ""
-        ],
-        [
-            "COMP",
-            "",
-            ""
-        ],
-        [
-            "ML",
-            "",
-            ""
-        ],
-        [
-            "OS",
-            "",
-            ""
-        ],
-        [
-            "ML_LAB/DS_LAB",
-            "",
-            ""
-        ],
-        [
-            "ML_LAB/OS_LAB",
-            "",
-            ""
-        ],
-        [
-            "DS_LAB/OS_LAB",
-            "",
-            ""
-        ]
-    ],
+    "attendance": [],
     "sessions": [
-        "Absent",
+        "Present",
         "Present",
         "Absent",
-        "Absent",
-        "Absent",
+        "Present",
+        "Present",
         "Absent",
         "Absent"
     ],
+    "overall_attendance_percentage": 72.83,
     "timetable": [
         {
             "header": "Monday",
