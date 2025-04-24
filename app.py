@@ -387,7 +387,7 @@ except Exception as e:
     print(f"Error creating index: {e}")
 
 # Set the OpenRouter API key securely
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "#"
 
 # Initialize OpenRouter client
 openrouter_client = OpenAI(
